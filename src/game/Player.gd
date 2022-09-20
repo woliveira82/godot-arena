@@ -30,7 +30,7 @@ func _physics_process(delta):
 			_move(delta)
 
 		ATTACK:
-			pass
+			_attack()
 
 		DYING:
 			pass
@@ -72,10 +72,19 @@ func _move(delta):
 
 		animation_player.play('idle_%s%s' % [face, animation_option])
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+	
+	if Input.is_action_just_pressed('attack'):
+		state = ATTACK
 
 
 func _attack():
-	pass
+	velocity = Vector2.ZERO
+	var face = 'right' if facing_right else 'left'
+	animation_player.play('attack_%s' % face)
+
+
+func _animation_finished():
+	state = MOVE
 
 
 func _on_Timer_timeout():
