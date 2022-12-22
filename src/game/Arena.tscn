@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/images/background-arena.jpg" type="Texture" id=1]
-[ext_resource path="res://src/game/scene/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game/characters/Player.tscn" type="PackedScene" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 545, 135.5 )
