@@ -14,9 +14,6 @@ anchor_bottom = 1.0
 texture = ExtResource( 1 )
 centered = false
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 64, 375 )
-
 [node name="Bleachers" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bleachers"]
@@ -25,3 +22,5 @@ shape = SubResource( 1 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Bleachers"]
 polygon = PoolVector2Array( 0, 233, 0, 600, 1024, 600, 1024, 233, 1056, 233, 1056, 639, -35, 639, -35, 233 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]

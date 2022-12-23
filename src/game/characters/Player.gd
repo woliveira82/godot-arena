@@ -1,12 +1,14 @@
 extends KinematicBody2D
 
 const ACCELERATION = 500
-const MAX_SPEED = 150
+const MAX_SPEED = 200
 const FRICTION = 500
 
-onready var animation_player = $AnimationPlayer
+onready var animated_sprite = $AnimatedSprite
+onready var timer_attack = $TimerAttack
 
 enum {
+	IDLE,
 	MOVE,
 	ATTACK,
 	DYING
@@ -25,15 +27,26 @@ func _ready():
 
 
 func _physics_process(delta):
-	match state:
-		MOVE:
-			_move(delta)
+	var input = _get_input_vector()
+	if state != ATTACK:
+		if Input.is_action_just_pressed("attack"):
+			state = ATTACK
+	
+		else:
+			state = IDLE if input == Vector2.ZERO else MOVE
+	
+		match state:
+			IDLE:
+				_idle()
 
-		ATTACK:
-			_attack()
+			MOVE:
+				_move(input)
 
-		DYING:
-			pass
+			ATTACK:
+				_attack()
+
+			DYING:
+				pass
 
 	velocity = move_and_slide(velocity)
 
@@ -43,53 +56,32 @@ func _get_input_vector():
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	input_vector = input_vector.normalized()
-
-	if input_vector.x > 0:
-		facing_right = true
-
-	elif input_vector.x < 0:
-		facing_right = false
-	
+	_flip_sprite(input_vector.x)
 	return input_vector
 
 
-func _move(delta):
-	var input_vector = _get_input_vector()
-	var face = 'right' if facing_right else 'left'
-	if input_vector != Vector2.ZERO:
-		$TimerIdle.stop()
-		state = MOVE
-		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
-		animation_player.play('run_%s' % face)
+func _flip_sprite(x_input):
+	if x_input > 0:
+		animated_sprite.flip_h = false
+	elif x_input < 0:
+		animated_sprite.flip_h = true
 
-	else:
-		if $TimerIdle.is_stopped():
-			$TimerIdle.start(4)
-		
-		var animation_option = ''
-		if alt_animation:
-			animation_option = '_alt'
 
-		animation_player.play('idle_%s%s' % [face, animation_option])
-		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
-	
-	if Input.is_action_just_pressed('attack'):
-		state = ATTACK
+func _idle():
+	animated_sprite.play("Idle 1")
+	velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
+
+
+func _move(input):
+	animated_sprite.play("Run")
+	velocity = velocity.move_toward(input * MAX_SPEED, ACCELERATION)
 
 
 func _attack():
-	velocity = Vector2.ZERO
-	var face = 'right' if facing_right else 'left'
-	animation_player.play('attack_%s' % face)
+	animated_sprite.play("Attack")
+	velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
+	timer_attack.start()
 
 
-func _animation_finished():
-	state = MOVE
-
-
-func _on_Timer_timeout():
-	if rng.randf() > 0.5:
-		alt_animation = true
-
-	$TimerIdle.start(4)
-
+func _on_TimerAttack_timeout():
+	state = IDLE
