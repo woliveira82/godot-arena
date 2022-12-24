@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 const ACCELERATION = 500
-const MAX_SPEED = 200
+const MAX_SPEED = 50
 const FRICTION = 500
 
 onready var animated_sprite = $AnimatedSprite

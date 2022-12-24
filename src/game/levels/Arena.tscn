@@ -4,23 +4,27 @@
 [ext_resource path="res://src/game/characters/Player.tscn" type="PackedScene" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 545, 135.5 )
+extents = Vector2( 170, 39.5 )
 
 [node name="Arena" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="BackgroundArena" type="Sprite" parent="."]
+scale = Vector2( 0.3125, 0.3 )
 texture = ExtResource( 1 )
 centered = false
 
 [node name="Bleachers" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bleachers"]
-position = Vector2( 509, 97.5 )
+position = Vector2( 160, 29.5 )
 shape = SubResource( 1 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Bleachers"]
-polygon = PoolVector2Array( 0, 233, 0, 600, 1024, 600, 1024, 233, 1056, 233, 1056, 639, -35, 639, -35, 233 )
+position = Vector2( 0, -10 )
+scale = Vector2( 0.331118, 0.339902 )
+polygon = PoolVector2Array( 0, 232.42, 0, 558.985, 966.422, 558.985, 966.422, 232.42, 996.623, 232.42, 996.623, 588.406, -30.2007, 588.406, -30.2007, 232.42 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 141, 103 )
