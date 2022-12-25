@@ -1,14 +1,20 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/images/background-arena.jpg" type="Texture" id=1]
 [ext_resource path="res://src/game/characters/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/game/levels/Arena.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 170, 39.5 )
 
+[sub_resource type="Theme" id=2]
+
+[sub_resource type="Theme" id=3]
+
 [node name="Arena" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 3 )
 
 [node name="BackgroundArena" type="Sprite" parent="."]
 scale = Vector2( 0.3125, 0.3 )
@@ -28,3 +34,56 @@ polygon = PoolVector2Array( 0, 232.42, 0, 558.985, 966.422, 558.985, 966.422, 23
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 141, 103 )
+
+[node name="TestPanel" type="Panel" parent="."]
+margin_left = 3.0
+margin_top = 2.0
+margin_right = 97.0
+margin_bottom = 57.0
+theme = SubResource( 2 )
+
+[node name="ButtonBlack" type="Button" parent="TestPanel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 30.0
+margin_bottom = 25.0
+theme = SubResource( 3 )
+text = "B"
+
+[node name="ButtonDark" type="Button" parent="TestPanel"]
+margin_left = 5.0
+margin_top = 30.0
+margin_right = 30.0
+margin_bottom = 50.0
+theme = SubResource( 3 )
+text = "D"
+
+[node name="ButtonElf" type="Button" parent="TestPanel"]
+margin_left = 35.0
+margin_top = 5.0
+margin_right = 59.0
+margin_bottom = 25.0
+theme = SubResource( 3 )
+text = "E"
+
+[node name="ButtonOrc" type="Button" parent="TestPanel"]
+margin_left = 35.0
+margin_top = 30.0
+margin_right = 59.0
+margin_bottom = 50.0
+theme = SubResource( 3 )
+text = "O"
+
+[node name="ButtonWhite" type="Button" parent="TestPanel"]
+margin_left = 64.0
+margin_top = 5.0
+margin_right = 89.0
+margin_bottom = 25.0
+theme = SubResource( 3 )
+text = "W"
+
+[connection signal="button_down" from="TestPanel/ButtonBlack" to="." method="_on_ButtonBlack_button_down"]
+[connection signal="button_down" from="TestPanel/ButtonDark" to="." method="_on_ButtonDark_button_down"]
+[connection signal="button_down" from="TestPanel/ButtonElf" to="." method="_on_ButtonElf_button_down"]
+[connection signal="button_down" from="TestPanel/ButtonOrc" to="." method="_on_ButtonOrc_button_down"]
+[connection signal="button_down" from="TestPanel/ButtonWhite" to="." method="_on_ButtonWhite_button_down"]

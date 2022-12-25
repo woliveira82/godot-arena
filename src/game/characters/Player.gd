@@ -63,6 +63,8 @@ func _get_input_vector():
 func _flip_sprite(x_input):
 	if x_input > 0:
 		animated_sprite.flip_h = false
+
+
 	elif x_input < 0:
 		animated_sprite.flip_h = true
 
@@ -81,6 +83,10 @@ func _attack():
 	animated_sprite.play("Attack")
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
 	timer_attack.start()
+
+
+func update_frames(resource):
+	animated_sprite.frames = resource
 
 
 func _on_TimerAttack_timeout():
