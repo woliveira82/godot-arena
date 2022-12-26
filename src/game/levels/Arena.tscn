@@ -37,6 +37,7 @@ polygon = PoolVector2Array( 0, 232.42, 0, 558.985, 966.422, 558.985, 966.422, 23
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 141, 103 )
+alt_animation = true
 
 [node name="TestPanel" type="Panel" parent="."]
 anchor_right = 1.0
@@ -87,11 +88,11 @@ theme = SubResource( 3 )
 text = "W"
 
 [node name="HitboxTeste" type="Area2D" parent="."]
+position = Vector2( 20, 110 )
 collision_layer = 0
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxTeste"]
-position = Vector2( 20, 109 )
 shape = SubResource( 4 )
 
 [connection signal="button_down" from="TestPanel/ButtonBlack" to="." method="_on_ButtonBlack_button_down"]
