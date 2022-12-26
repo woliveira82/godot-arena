@@ -91,3 +91,7 @@ func update_frames(resource):
 
 func _on_TimerAttack_timeout():
 	state = IDLE
+
+
+func _on_Hurtbox_hit(area):
+	print(area.position)
