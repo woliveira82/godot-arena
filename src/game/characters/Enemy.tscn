@@ -1,19 +1,36 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/game/characters/resources/Orc.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://src/game/characters/Enemy.gd" type="Script" id=2]
+[ext_resource path="res://src/game/utils/Hurtbox.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 1.0
-height = 8.0
+height = 6.0
 
-[node name="KinematicBody2D" type="KinematicBody2D"]
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 4.0
+height = 4.0
+
+[node name="Enemy" type="KinematicBody2D"]
+script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -8 )
+position = Vector2( -0.5, -8 )
 frames = ExtResource( 1 )
 animation = "Run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -1 )
+position = Vector2( -1, -1 )
 rotation = 1.5708
 shape = SubResource( 1 )
+
+[node name="Hurtbox" parent="." instance=ExtResource( 3 )]
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2( -0.5, -7.5 )
+shape = SubResource( 2 )
+
+[connection signal="hit" from="Hurtbox" to="." method="_on_Hurtbox_hit"]
+
+[editable path="Hurtbox"]

@@ -76,7 +76,7 @@ func _flip_sprite(x_input):
 
 func _idle(delta):
 	animated_sprite.play("Idle 1")
-	velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
+	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 
 func _move(delta, input):
@@ -96,7 +96,7 @@ func _damage(delta):
 
 func _dying(delta):
 	animated_sprite.play("Damage")
-	velocity = velocity.move_toward(Vector2.ZERO, FRICTION)
+	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 
 func update_frames(resource):

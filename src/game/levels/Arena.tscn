@@ -35,10 +35,6 @@ position = Vector2( 0, -10 )
 scale = Vector2( 0.331118, 0.339902 )
 polygon = PoolVector2Array( 0, 232.42, 0, 558.985, 966.422, 558.985, 966.422, 232.42, 996.623, 232.42, 996.623, 588.406, -30.2007, 588.406, -30.2007, 232.42 )
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 141, 103 )
-alt_animation = true
-
 [node name="TestPanel" type="Panel" parent="."]
 anchor_right = 1.0
 margin_left = 224.0
@@ -87,6 +83,14 @@ margin_bottom = 25.0
 theme = SubResource( 3 )
 text = "W"
 
+[node name="ButtonEnemy" type="Button" parent="TestPanel"]
+margin_left = 64.0
+margin_top = 30.0
+margin_right = 89.0
+margin_bottom = 50.0
+theme = SubResource( 3 )
+text = "+"
+
 [node name="HitboxTeste" type="Area2D" parent="."]
 position = Vector2( 20, 110 )
 collision_layer = 0
@@ -95,8 +99,15 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxTeste"]
 shape = SubResource( 4 )
 
+[node name="YSort" type="YSort" parent="."]
+
+[node name="Player" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 141, 103 )
+alt_animation = true
+
 [connection signal="button_down" from="TestPanel/ButtonBlack" to="." method="_on_ButtonBlack_button_down"]
 [connection signal="button_down" from="TestPanel/ButtonDark" to="." method="_on_ButtonDark_button_down"]
 [connection signal="button_down" from="TestPanel/ButtonElf" to="." method="_on_ButtonElf_button_down"]
 [connection signal="button_down" from="TestPanel/ButtonOrc" to="." method="_on_ButtonOrc_button_down"]
 [connection signal="button_down" from="TestPanel/ButtonWhite" to="." method="_on_ButtonWhite_button_down"]
+[connection signal="button_down" from="TestPanel/ButtonEnemy" to="." method="_on_ButtonEnemy_button_down"]
