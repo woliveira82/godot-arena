@@ -5,7 +5,7 @@
 [ext_resource path="res://src/game/utils/Hurtbox.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape2D" id=15]
-radius = 1.0
+radius = 1.99999
 height = 6.0
 
 [sub_resource type="CapsuleShape2D" id=16]

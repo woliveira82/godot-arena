@@ -3,7 +3,7 @@ extends Area2D
 onready var timer = $Timer
 onready var collision_shape = $CollisionShape2D
 
-signal hit(body)
+signal hit(area)
 
 var invencible = false
 
@@ -13,9 +13,6 @@ func _on_Timer_timeout():
 
 
 func _on_Hurtbox_area_entered(area):
-	print('area.position')
-	print(area.global_position)
-	
 	if not invencible:
 		invencible = true
 		emit_signal('hit', area)

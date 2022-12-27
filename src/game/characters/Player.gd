@@ -4,9 +4,6 @@ const ACCELERATION = 500
 const MAX_SPEED = 50
 const FRICTION = 500
 
-onready var animated_sprite = $AnimatedSprite
-onready var timer_input = $TimerInput
-
 enum {
 	IDLE,
 	MOVE,
@@ -14,6 +11,9 @@ enum {
 	DAMAGE,
 	DYING
 }
+
+onready var animated_sprite = $AnimatedSprite
+onready var timer_input = $TimerInput
 
 var state = MOVE
 var rng = RandomNumberGenerator.new()
@@ -38,20 +38,11 @@ func _physics_process(delta):
 			state = IDLE if input == Vector2.ZERO else MOVE
 	
 	match state:
-		IDLE:
-			_idle(delta)
-
-		MOVE:
-			_move(delta, input)
-
-		ATTACK:
-			_attack(delta)
-
-		DAMAGE:
-			_damage(delta)
-
-		DYING:
-			_dying(delta)
+		IDLE: _idle(delta)
+		MOVE: _move(delta, input)
+		ATTACK: _attack(delta)
+		DAMAGE: _damage(delta)
+		DYING: _dying(delta)
 
 	velocity = move_and_slide(velocity)
 
@@ -68,7 +59,6 @@ func _get_input_vector():
 func _flip_sprite(x_input):
 	if x_input > 0:
 		animated_sprite.flip_h = false
-
 
 	elif x_input < 0:
 		animated_sprite.flip_h = true
