@@ -51,11 +51,12 @@ func _close_to(target_enemy):
 
 
 func _flip_sprite(x_velocity):
+	var face_left = state != DAMAGE
 	if x_velocity < 0:
-		animated_sprite.flip_h = true
+		animated_sprite.flip_h = face_left
 
 	elif x_velocity > 0:
-		animated_sprite.flip_h = false
+		animated_sprite.flip_h = !face_left
 
 
 func _idle(delta):

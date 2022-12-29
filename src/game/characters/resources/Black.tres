@@ -111,7 +111,7 @@ animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ],
 "loop": true,
 "name": "Attack",
-"speed": 3.0
+"speed": 7.0
 }, {
 "frames": [ SubResource( 25 ), SubResource( 25 ), SubResource( 24 ), SubResource( 26 ) ],
 "loop": true,

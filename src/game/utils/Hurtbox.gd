@@ -16,4 +16,4 @@ func _on_Hurtbox_area_entered(area):
 	if not invencible:
 		invencible = true
 		emit_signal('hit', area)
-		timer.start()
+		timer.start(0.7)

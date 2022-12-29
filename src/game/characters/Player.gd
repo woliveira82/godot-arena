@@ -14,6 +14,9 @@ enum {
 
 onready var animated_sprite = $AnimatedSprite
 onready var timer_input = $TimerInput
+onready var weapon = $Position2D/Sword
+onready var weapon_position = $Position2D
+
 
 var state = MOVE
 var rng = RandomNumberGenerator.new()
@@ -31,7 +34,7 @@ func _physics_process(delta):
 	var input = Vector2.ZERO
 	if allow_input:
 		if Input.is_action_just_pressed("attack"):
-			_disable_input(1.0, ATTACK)
+			_disable_input(0.6, ATTACK)
 	
 		else:
 			input = _get_input_vector()
@@ -58,24 +61,31 @@ func _get_input_vector():
 
 func _flip_sprite(x_input):
 	if x_input > 0:
+		animated_sprite.position.x = -0.5
 		animated_sprite.flip_h = false
+		weapon_position.scale.x = 1
 
 	elif x_input < 0:
+		animated_sprite.position.x = 0.5
 		animated_sprite.flip_h = true
+		weapon_position.scale.x = -1
 
 
 func _idle(delta):
 	animated_sprite.play("Idle 1")
+	weapon.idle()
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 
 func _move(delta, input):
 	animated_sprite.play("Run")
+	weapon.run()
 	velocity = velocity.move_toward(input * MAX_SPEED, ACCELERATION * delta)
 
 
 func _attack(delta):
 	animated_sprite.play("Attack")
+	weapon.attack()
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 
