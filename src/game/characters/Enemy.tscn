@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/game/characters/resources/Orc.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://src/game/characters/Enemy.gd" type="Script" id=2]
 [ext_resource path="res://src/game/utils/Hurtbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/game/characters/Sword.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 1.99999
@@ -34,7 +35,17 @@ shape = SubResource( 2 )
 
 [node name="TimerIdle" type="Timer" parent="."]
 
+[node name="Position2D" type="Position2D" parent="."]
+
+[node name="Sword" parent="Position2D" instance=ExtResource( 4 )]
+position = Vector2( 0, -3 )
+
+[node name="Hitbox" parent="Position2D/Sword" index="1"]
+collision_mask = 4
+
 [connection signal="hit" from="Hurtbox" to="." method="_on_Hurtbox_hit"]
 [connection signal="timeout" from="TimerIdle" to="." method="_on_TimerIdle_timeout"]
 
 [editable path="Hurtbox"]
+[editable path="Position2D/Sword"]
+[editable path="Position2D/Sword/Hitbox"]

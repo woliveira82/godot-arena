@@ -12,7 +12,10 @@ enum {
 }
 
 onready var animated_sprite = $AnimatedSprite
+onready var weapon = $Position2D/Sword
+onready var weapon_position = $Position2D
 onready var timer_idle = $TimerIdle
+
 
 var rng = RandomNumberGenerator.new()
 var state = IDLE
@@ -54,28 +57,34 @@ func _flip_sprite(x_velocity):
 	var face_left = state != DAMAGE
 	if x_velocity < 0:
 		animated_sprite.flip_h = face_left
+		weapon_position.scale.x = -1
 
 	elif x_velocity > 0:
 		animated_sprite.flip_h = !face_left
+		weapon_position.scale.x = 1
 
 
 func _idle(delta):
 	animated_sprite.play("Idle 1")
+	weapon.idle()
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 
 func _attack(delta):
 	animated_sprite.play("Attack")
+	weapon.attack()
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 
 func _damage(delta):
 	animated_sprite.play("Damage")
+	weapon.run()
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 
 func _move_toward(target_enemy, delta):
 	animated_sprite.play("Run")
+	weapon.run()
 	var direction = global_position.direction_to(target_enemy.global_position)
 	velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
 

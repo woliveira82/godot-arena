@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/images/background-arena.jpg" type="Texture" id=1]
 [ext_resource path="res://src/game/characters/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/game/levels/Arena.gd" type="Script" id=3]
+[ext_resource path="res://src/game/ui/Hearts.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 170, 39.5 )
@@ -21,6 +22,12 @@ scale = Vector2( 0.3125, 0.3 )
 texture = ExtResource( 1 )
 centered = false
 
+[node name="Hearts" parent="." instance=ExtResource( 4 )]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 6.0
+margin_bottom = 6.0
+
 [node name="Bleachers" type="StaticBody2D" parent="."]
 collision_mask = 0
 
@@ -35,58 +42,19 @@ polygon = PoolVector2Array( 0, 232.42, 0, 558.985, 966.422, 558.985, 966.422, 23
 
 [node name="TestPanel" type="Panel" parent="."]
 anchor_right = 1.0
-margin_left = 224.0
+margin_left = 284.0
 margin_top = 2.0
 margin_right = -2.0
-margin_bottom = 57.0
+margin_bottom = 32.0
 theme = SubResource( 2 )
 
-[node name="ButtonBlack" type="Button" parent="TestPanel"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 30.0
-margin_bottom = 25.0
-theme = SubResource( 3 )
-text = "B"
-
-[node name="ButtonDark" type="Button" parent="TestPanel"]
-margin_left = 5.0
-margin_top = 30.0
-margin_right = 30.0
-margin_bottom = 50.0
-theme = SubResource( 3 )
-text = "D"
-
-[node name="ButtonElf" type="Button" parent="TestPanel"]
-margin_left = 35.0
-margin_top = 5.0
-margin_right = 59.0
-margin_bottom = 25.0
-theme = SubResource( 3 )
-text = "E"
-
-[node name="ButtonOrc" type="Button" parent="TestPanel"]
-margin_left = 35.0
-margin_top = 30.0
-margin_right = 59.0
-margin_bottom = 50.0
-theme = SubResource( 3 )
-text = "O"
-
-[node name="ButtonWhite" type="Button" parent="TestPanel"]
-margin_left = 64.0
-margin_top = 5.0
-margin_right = 89.0
-margin_bottom = 25.0
-theme = SubResource( 3 )
-text = "W"
-
 [node name="ButtonEnemy" type="Button" parent="TestPanel"]
-margin_left = 64.0
-margin_top = 30.0
-margin_right = 89.0
-margin_bottom = 50.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 30.0
+margin_bottom = 25.0
 theme = SubResource( 3 )
+shortcut_in_tooltip = false
 text = "+"
 
 [node name="YSort" type="YSort" parent="."]
@@ -95,9 +63,6 @@ text = "+"
 position = Vector2( 141, 103 )
 alt_animation = true
 
-[connection signal="button_down" from="TestPanel/ButtonBlack" to="." method="_on_ButtonBlack_button_down"]
-[connection signal="button_down" from="TestPanel/ButtonDark" to="." method="_on_ButtonDark_button_down"]
-[connection signal="button_down" from="TestPanel/ButtonElf" to="." method="_on_ButtonElf_button_down"]
-[connection signal="button_down" from="TestPanel/ButtonOrc" to="." method="_on_ButtonOrc_button_down"]
-[connection signal="button_down" from="TestPanel/ButtonWhite" to="." method="_on_ButtonWhite_button_down"]
 [connection signal="button_down" from="TestPanel/ButtonEnemy" to="." method="_on_ButtonEnemy_button_down"]
+[connection signal="health_update" from="YSort/Player" to="." method="_on_Player_health_update"]
+[connection signal="player_dead" from="YSort/Player" to="." method="_on_Player_player_dead"]

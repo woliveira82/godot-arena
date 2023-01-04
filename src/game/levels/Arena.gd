@@ -10,31 +10,14 @@ var enemy_scene = preload("res://src/game/characters/Enemy.tscn")
 
 onready var player = $YSort/Player
 onready var field = $YSort
+onready var hearts = $Hearts
 
 
 func _ready():
 	randomize()
 	rng.randomize()
-
-
-func _on_ButtonBlack_button_down():
-	player.update_frames(black_sprites)
-
-
-func _on_ButtonDark_button_down():
-	player.update_frames(dark_sprites)
-
-
-func _on_ButtonElf_button_down():
-	player.update_frames(elf_sprites)
-
-
-func _on_ButtonOrc_button_down():
-	player.update_frames(orc_sprites)
-
-
-func _on_ButtonWhite_button_down():
-	player.update_frames(white_sprites)
+	hearts.max_hearts = player.stats.max_health
+	hearts.hearts = player.stats.health
 
 
 func _on_ButtonEnemy_button_down():
@@ -42,4 +25,12 @@ func _on_ButtonEnemy_button_down():
 	enemy.global_position = Vector2(300, rng.randi_range(80, 170))
 	field.add_child(enemy)
 	enemy.set_enemy(get_node("YSort/Player"))
-	
+
+
+func _on_Player_health_update(value):
+	hearts.set_hearts(value)
+
+
+func _on_Player_player_dead():
+	hearts.set_hearts(0)
+	Engine.time_scale = 0.1
