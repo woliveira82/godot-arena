@@ -25,6 +25,7 @@ script = ExtResource( 1 )
 position = Vector2( -0.5, -8 )
 frames = ExtResource( 2 )
 animation = "Idle 1"
+frame = 2
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -43,6 +44,8 @@ shape = SubResource( 16 )
 [node name="TimerInput" type="Timer" parent="."]
 one_shot = true
 
+[node name="TimerDead" type="Timer" parent="."]
+
 [node name="Position2D" type="Position2D" parent="."]
 
 [node name="Sword" parent="Position2D" instance=ExtResource( 4 )]
@@ -51,5 +54,6 @@ position = Vector2( 0, -3 )
 [connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
 [connection signal="timeout" from="TimerInput" to="." method="_on_TimerInput_timeout"]
+[connection signal="timeout" from="TimerDead" to="." method="_on_TimerDead_timeout"]
 
 [editable path="Hurtbox"]

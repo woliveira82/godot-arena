@@ -148,7 +148,7 @@ animations = [ {
 "speed": 5.0
 }, {
 "frames": [ SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ) ],
-"loop": true,
+"loop": false,
 "name": "Dying",
 "speed": 5.0
 }, {

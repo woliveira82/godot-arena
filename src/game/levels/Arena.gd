@@ -33,4 +33,4 @@ func _on_Player_health_update(value):
 
 func _on_Player_player_dead():
 	hearts.set_hearts(0)
-	Engine.time_scale = 0.1
+	Engine.time_scale = 0.2

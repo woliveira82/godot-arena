@@ -9,8 +9,7 @@ enum {
 	MOVE,
 	ATTACK,
 	DAMAGE,
-	DYING,
-	DEAD
+	DYING
 }
 
 signal health_update(value)
@@ -19,6 +18,7 @@ signal player_dead
 
 onready var animated_sprite = $AnimatedSprite
 onready var timer_input = $TimerInput
+onready var timer_dead = $TimerDead
 onready var weapon = $Position2D/Sword
 onready var weapon_position = $Position2D
 onready var stats = $Stats
@@ -51,7 +51,6 @@ func _physics_process(delta):
 		ATTACK: _attack(delta)
 		DAMAGE: _damage(delta)
 		DYING: _dying(delta)
-		DEAD: _dead()
 
 	velocity = move_and_slide(velocity)
 
@@ -107,12 +106,6 @@ func _dying(delta):
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 
-func _dead():
-	animated_sprite.play("Dead")
-	velocity = Vector2.ZERO
-	allow_input = false
-
-
 func update_frames(resource):
 	animated_sprite.frames = resource
 
@@ -127,27 +120,25 @@ func _disable_input(duration, new_state):
 	state = new_state
 
 
-func _on_Hurtbox_hit(area):
-	_disable_input(0.5, DAMAGE)
-	var push_force = 150 if area.global_position.x < position.x else -150
-	velocity.x += push_force
-	stats.harm(1)
-	emit_signal("health_update", stats.health)
-
-
 func _on_TimerInput_timeout():
 	allow_input = true
 
 
 func _on_Stats_no_health():
-	state = DYING
-	_disable_input(1.0, DEAD)
+	_disable_input(10.0, DYING)
+	timer_dead.start(1.0)
+	
 	emit_signal("player_dead")
 
 
 func _on_Hurtbox_area_entered(area):
-	_disable_input(0.5, DAMAGE)
-	var push_force = 150 if area.global_position.x < position.x else -150
-	velocity.x += push_force
-	stats.harm(1)
-	emit_signal("health_update", stats.health)
+	if stats.health > 0:
+		_disable_input(0.5, DAMAGE)
+		var push_force = 150 if area.global_position.x < position.x else -150
+		velocity.x += push_force
+		stats.harm(1)
+		emit_signal("health_update", stats.health)
+
+
+func _on_TimerDead_timeout():
+	pass
