@@ -10,11 +10,8 @@ var max_hearts setget set_max_hearts
 
 
 func set_hearts(value: int):
-	print('hearts before: ', hearts)
 	hearts = clamp(value, 0, max_hearts)
-	print('hearts after: ', hearts)
 	full_hearts.rect_size.x = hearts * 8
-	print(full_hearts.rect_size.x)
 
 
 func set_max_hearts(value: int):

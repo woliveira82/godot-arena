@@ -14,26 +14,30 @@ enum {
 onready var animated_sprite = $AnimatedSprite
 onready var weapon = $Position2D/Sword
 onready var weapon_position = $Position2D
-onready var timer_idle = $TimerIdle
+onready var timer_state = $TimerState
 
 
 var rng = RandomNumberGenerator.new()
 var state = IDLE
+var next_state = IDLE
 var velocity = Vector2.ZERO
-var allow_input = true
 var enemy = null
-var stand_still = false
+var keep_state: bool = false
 
-export var alt_animation = false
+export var alt_animation: bool = false
 
 
 func _ready():
-	_set_idle(1.0, IDLE)
+	_keep_state(1.0, IDLE)
 
 
 func _physics_process(delta):
-	if not stand_still:
-		state = ATTACK if _close_to(enemy) else MOVE
+	if not keep_state:
+		if _close_to(enemy):
+			_keep_state(0.5, ATTACK)
+
+		else:
+			state = MOVE
 
 	match state:
 		IDLE: _idle(delta)
@@ -89,17 +93,17 @@ func _move_toward(target_enemy, delta):
 	velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
 
 
-func _set_idle(duration, new_state):
-	stand_still = true
-	timer_idle.start(duration)
-	state = new_state
+func _keep_state(duration, new_state=null):
+	keep_state = true
+	timer_state.start(duration)
+	if new_state: state = new_state
 
 
-func _on_Hurtbox_hit(area):
-	_set_idle(0.5, DAMAGE)
+func _on_TimerState_timeout():
+	keep_state = false
+
+
+func _on_Hurtbox_area_entered(area):
+	_keep_state(0.5, DAMAGE)
 	var push_force = 150 if area.global_position.x < position.x else -150
 	velocity.x += push_force
-
-
-func _on_TimerIdle_timeout():
-	stand_still = false

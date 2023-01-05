@@ -23,7 +23,7 @@ func harm(value: int):
 		timer.start(1.0)
 
 
-func heal(value):
+func heal(value: int):
 	health = min(health + abs(value), max_health)
 
 
