@@ -18,6 +18,7 @@ func _ready():
 	rng.randomize()
 	hearts.max_hearts = player.stats.max_health
 	hearts.hearts = player.stats.health
+	_on_ButtonEnemy_button_down()
 
 
 func _on_ButtonEnemy_button_down():

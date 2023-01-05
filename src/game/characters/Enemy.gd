@@ -8,18 +8,21 @@ enum {
 	IDLE,
 	MOVE,
 	ATTACK,
-	DAMAGE
+	DAMAGE,
+	DYING,
 }
 
 onready var animated_sprite = $AnimatedSprite
-onready var weapon = $Position2D/Sword
-onready var weapon_position = $Position2D
+onready var animation = $AnimationPlayer
 onready var timer_state = $TimerState
+onready var weapon_position = $Position2D
+onready var weapon = $Position2D/Sword
+onready var stats = $Stats
 
 
 var rng = RandomNumberGenerator.new()
 var state = IDLE
-var next_state = IDLE
+var alive: bool = true
 var velocity = Vector2.ZERO
 var enemy = null
 var keep_state: bool = false
@@ -32,7 +35,7 @@ func _ready():
 
 
 func _physics_process(delta):
-	if not keep_state:
+	if not keep_state and alive:
 		if _close_to(enemy):
 			_keep_state(0.5, ATTACK)
 
@@ -44,6 +47,7 @@ func _physics_process(delta):
 		MOVE: _move_toward(enemy, delta)
 		ATTACK: _attack(delta)
 		DAMAGE: _damage(delta)
+		DYING: _dying(delta)
 
 	_flip_sprite(velocity.x)
 	velocity = move_and_slide(velocity)
@@ -86,6 +90,11 @@ func _damage(delta):
 	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 
 
+func _dying(delta):
+	animated_sprite.play("Dying")
+	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+
+
 func _move_toward(target_enemy, delta):
 	animated_sprite.play("Run")
 	weapon.run()
@@ -104,6 +113,15 @@ func _on_TimerState_timeout():
 
 
 func _on_Hurtbox_area_entered(area):
-	_keep_state(0.5, DAMAGE)
-	var push_force = 150 if area.global_position.x < position.x else -150
-	velocity.x += push_force
+	if alive:
+		_keep_state(0.5, DAMAGE)
+		stats.harm(1)
+		var push_force = 150 if area.global_position.x < position.x else -150
+		velocity.x += push_force
+
+
+func _on_Stats_no_health():
+	keep_state = true
+	alive = false
+	state = DYING
+	animation.play("Vanish")
