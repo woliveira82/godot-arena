@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
-const ACCELERATION = 500
-const MAX_SPEED = 50
-const FRICTION = 500
+var ACCELERATION = 500
+var MAX_SPEED = 50
+var FRICTION = 500
 
 enum {
 	IDLE,
@@ -19,7 +19,6 @@ onready var weapon_position = $Position2D
 onready var weapon = $Position2D/Sword
 onready var stats = $Stats
 
-
 var rng = RandomNumberGenerator.new()
 var state = IDLE
 var alive: bool = true
@@ -28,19 +27,47 @@ var enemy = null
 var keep_state: bool = false
 
 export var alt_animation: bool = false
+export var race = Data.HUMAN_BLACK
+
+signal look_for_player(enemy)
 
 
 func _ready():
 	_keep_state(1.0, IDLE)
+	var sprite = null
+	match race:
+		Data.DARK_ELF:
+			sprite = load("res://src/game/characters/resources/Dark.tres")
+			stats.speed = 1
+			_set_speed()
+		Data.ELF:
+			sprite = load("res://src/game/characters/resources/Elf.tres")
+			stats.speed = 1
+			_set_speed()
+		Data.HUMAN_BLACK:
+			sprite = load("res://src/game/characters/resources/Black.tres")
+			stats.vigor = 1
+		Data.HUMAN_WHITE:
+			sprite = load("res://src/game/characters/resources/White.tres")
+			stats.vigor = 1
+		Data.ORC:
+			sprite = load("res://src/game/characters/resources/Orc.tres")
+			stats.health += 1
+			
+	animated_sprite.frames = sprite
 
 
 func _physics_process(delta):
-	if not keep_state and alive:
-		if _close_to(enemy):
-			_keep_state(0.5, ATTACK)
+	if alive:
+		if not enemy:
+			state = IDLE
 
-		else:
-			state = MOVE
+		elif not keep_state:
+			if _close_to(enemy):
+				_keep_state(0.5, ATTACK)
+
+			else:
+				state = MOVE
 
 	match state:
 		IDLE: _idle(delta)
@@ -55,6 +82,13 @@ func _physics_process(delta):
 
 func set_enemy(new_enemy):
 	enemy = new_enemy
+
+
+func _set_speed():
+	var mod = 1.0 + stats.speed / 10
+	ACCELERATION *= mod
+	MAX_SPEED *= mod
+	FRICTION *= mod
 
 
 func _close_to(target_enemy):
@@ -104,7 +138,7 @@ func _move_toward(target_enemy, delta):
 
 func _keep_state(duration, new_state=null):
 	keep_state = true
-	timer_state.start(duration)
+	timer_state.start(duration * (1.0 - stats.vigor / 10))
 	if new_state: state = new_state
 
 

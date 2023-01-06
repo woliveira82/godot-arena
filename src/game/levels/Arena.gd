@@ -19,6 +19,7 @@ func _ready():
 	hearts.max_hearts = player.stats.max_health
 	hearts.hearts = player.stats.health
 	_on_ButtonEnemy_button_down()
+	get_tree().call_group('player_seeker', "set_enemy", player)
 
 
 func _on_ButtonEnemy_button_down():
@@ -35,3 +36,4 @@ func _on_Player_health_update(value):
 func _on_Player_player_dead():
 	hearts.set_hearts(0)
 	Engine.time_scale = 0.2
+	get_tree().call_group('player_seeker', "set_enemy", null)

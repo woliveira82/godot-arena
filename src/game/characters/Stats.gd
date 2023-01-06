@@ -2,9 +2,9 @@ extends Node
 
 signal no_health
 
-export var max_health: int = 6
-export var speed: int = 1
-export var vigor: int = 1
+export var max_health: int = 3
+export var speed: int = 0
+export var vigor: int = 0
 export var invencible: bool = false
 
 onready var health: int = max_health

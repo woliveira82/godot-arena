@@ -14,6 +14,10 @@ config/name="Godot-arena"
 run/main_scene="res://src/game/levels/Arena.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Data="*res://src/data and control/Data.gd"
+
 [display]
 
 window/size/width=320
